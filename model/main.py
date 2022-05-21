@@ -117,11 +117,13 @@ df5 = remove_pps_outliers(df4)
 df5.shape
 
 #Plot for the eur price oer square meter. which shows the normal distribution
+'''
 matplotlib.rcParams['figure.figsize']=(20,10)
 plt.hist(df5.eur_price_square,rwidth=0.8)
 plt.xlabel('Price Per Square Meter')
 plt.ylabel('Count')
 
+'''
 
 #We remove the columns that we will not need
 df6=df5.drop(['price/m2','eur_price_square'],axis='columns')
@@ -165,16 +167,16 @@ X_train, X_test, y_train, y_test= train_test_split(X,y,test_size=0.2,random_stat
 from sklearn.linear_model import LinearRegression
 lr_clf = LinearRegression()
 #We train the model
-lr_clf.fit(X_train,y_train)
+lr_clf.fit(X_train.values,y_train)
 #Check the score of the model , the r-value
-lr_clf.score(X_test,y_test)
+lr_clf.score(X_test.values,y_test)
 
 #We will cross validate
 from sklearn.model_selection import ShuffleSplit
 from sklearn.model_selection import cross_val_score
 #We get over 90% r for the different splitted random datasets
 cv= ShuffleSplit(n_splits=5, test_size=0.2 , random_state=0)
-cross_val_score(LinearRegression(),X, y,cv=cv)
+cross_val_score(LinearRegression(),X.values, y,cv=cv)
 
 #We will try to see if there is better algorithms
 from sklearn.model_selection import GridSearchCV
@@ -254,7 +256,5 @@ with open('shumen_appartament_price_model.pickle','wb') as f:
 columns={
     'data_columns':[col.lower() for col in X.columns]
 }
-with open('columns.json','w') as f:
-    f.write(json.dumps(columns))
-
-    
+# with open('columns.json','w',encoding='utf-8') as f:
+#     f.write(json.dumps(columns))
