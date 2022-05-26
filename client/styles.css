@@ -481,6 +481,12 @@ body {
   content: "\ec6e";
 }
 
+.now-ui-icons.location_bookmark:before {
+  content: "\ea10";
+
+}
+
+
 .navbar {
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
