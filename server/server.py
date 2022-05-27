@@ -108,6 +108,6 @@ if __name__ == '__main__':
     load_saved_artifacts()
     print(get_location_names())
     print(get_build_method())
-    print(get_predict_price('център',60,3,6,'панел'))
+    print(get_predict_price('тракия',58,3,9,'тухла'))
     app.run()
 

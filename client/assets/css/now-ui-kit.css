@@ -2650,7 +2650,7 @@ fieldset[disabled] .btn-link.active {
 }
 
 .form-control {
-  background-color: transparent;
+  background-color: #21252973;;
   border: 1px solid #E3E3E3;
   border-radius: 30px;
   color: #2c2c2c;
@@ -2711,7 +2711,7 @@ fieldset[disabled] .btn-link.active {
 }
 
 .has-danger .form-control:focus {
-  background-color: #FFFFFF;
+  background-color: #21252973;
 }
 
 .form-control+.form-control-feedback {
@@ -5870,7 +5870,7 @@ img {
 
 .login-page .card-login.card-plain .form-control:focus {
   border-color: #FFFFFF;
-  background-color: transparent;
+  background-color: #212529b5;
   color: #FFFFFF;
 }
 
