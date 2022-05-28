@@ -3610,8 +3610,8 @@ p {
 
 .category {
   text-transform: capitalize;
-  font-weight: 700;
-  color: #9A9A9A;
+  font-weight: 500;
+  color: #f96332 ;
 }
 
 .text-primary {
@@ -5826,7 +5826,7 @@ img {
 }
 
 .login-page .card-login .logo-container {
-  width: 65px;
+  width: 200px;
   margin: 0 auto;
   margin-bottom: 55px;
 }
@@ -5884,7 +5884,7 @@ img {
 }
 
 .login-page .card-login.card-plain .input-group-text {
-  background-color: transparent;
+  background-color:#21252973;
   border-color: rgba(255, 255, 255, 0.5);
   color: #FFFFFF;
 }
@@ -6048,7 +6048,7 @@ img {
 
 .page-header .category,
 .page-header .description {
-  color: rgba(255, 255, 255, 0.8);
+  color: #f96332;
 }
 
 .page-header:after,

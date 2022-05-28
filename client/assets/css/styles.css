@@ -1,4 +1,16 @@
 
+.h1-result {
+  font-size: 2.8em;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: block;
+  align-items: center
+
+}
+
+
+
+
 .btn{
   border-width: 2px;
   font-weight: 400;
@@ -182,7 +194,7 @@
 }
 
 .input-group.no-border.input-lg .form-control {
-  padding: 23px 19px !important;
+  padding: 0px 19px !important;
 }
 
 .input-group.no-border.input-lg .form-control+.input-group-text {
@@ -368,10 +380,15 @@ body {
   -ms-transition: all 150ms ease 0s;
   transition: all 150ms ease 0s;
 }
+.card-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: rgba(0,0,0,0);
+  border-top: 1px solid rgba(0,0,0,0);
+}
 
 .category {
   text-transform: capitalize;
-  font-weight: 700;
+  font-weight: 400;
   color: #9A9A9A;
 }
 
@@ -632,11 +649,9 @@ body {
 }
 
 .logo-container {
-  width: 27px;
-  height: 27px;
   overflow: hidden;
   margin: 0 auto;
-  border-radius: 50%;
+  border-radius: 0%;
   border: 1px solid transparent;
 }
 
@@ -860,7 +875,7 @@ img {
 }
 
 .login-page .card-login .logo-container {
-  width: 65px;
+  width: 200px;
   margin: 0 auto;
   margin-bottom: 55px;
 }
