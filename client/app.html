@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
     
     <meta charset="utf-8" />
@@ -21,16 +22,16 @@
   <body class="login-page sidebar-collapse vsc-initialized">
    
     <div class="page-header clear-filter" filter-color="green">
-        <div class="page-header-image" style="background-image:url('https://scontent-sof1-1.xx.fbcdn.net/v/t39.30808-6/242010441_107398075021623_7321246041163877298_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=e3f864&_nc_ohc=tSHVBARqtuQAX9C5cmn&_nc_ht=scontent-sof1-1.xx&oh=00_AT89Bd5pplaLuoWUgTciOEsS0CC_PKhu-kaRmv_Wo6YUFA&oe=628F2BD5')"></div>
+        <div class="page-header-image" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/5/51/Shumen_chitalishte_Dobri_Voynikov.jpg')"></div>
         
-        <div class="content" style="margin-top: 150px">
+        <div class="content" >
             <div class="container">
                 <div class="col-md-4 ml-auto mr-auto">
                     <div class="card card-login card-plain">
                         <form class="form" method="" action="">
                             <div class="card-header text-center">
                                 <div class="logo-container">
-                                    <div id="uiEstimatedPrice" class="h1-result">	<h1 ></h1> </div>
+                                    <div id="uiEstimatedPrice" class="h6-result">	<h6 ></h6> </div>
                                     
                                 </div>
                             </div>
@@ -38,24 +39,25 @@
                                 
                                 <div class="form-group">
                                     <p class="category">LOCATION</p>
-                                    <select class="form-control" name="" id="uiLocations">
+                                    <select class="form-control" name="" id="uiLocations" value="">
+                                      <option value="" disabled="disabled" selected="selected">Choose a Location</option>
                                       <option>1</option>
                                       <option>2</option>
                                       
                                     </select>
                                 </div>
-                                <p class="category" id="uiSquare">SQUARE METERS</p>
+                                <p class="category">SQUARE METERS</p>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text"><i class="now-ui-icons design-2_ruler-pencil"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Square meters...">
+                                    <input type="text" class="form-control" id="uiSquare" placeholder="Square meters..." value="">
                                   </div>
 
 
                                 <div class="form-group">
-                                    <p class="category" id ="uiFloor">FLOOR</p>
-                                    <select class="form-control">
+                                    <p class="category" >FLOOR</p>
+                                    <select class="form-control" name="" id ="uiFloor" value="">
                                       <option>1</option>
                                       <option>2</option>
                                       <option>3</option>
@@ -77,8 +79,8 @@
                             </div>
                                 
                             <div class="form-group">
-                                <p class="category" id="uiBuilding">TYPE OF BUILDING</p>
-                                <select class="form-control">
+                                <p class="category" >TYPE OF BUILDING</p>
+                                <select class="form-control" name="" id="uiBuild">
                                   <option>епк</option>
                                   <option>панел</option>
                                   <option>тухла</option>
@@ -86,35 +88,34 @@
                               </div>
                               <p class="category" style="
                               margin-bottom: 0px;
-                              margin-top: 20px;" id="uiRooms">ROOMS</p>
-                              
-                              <div class="btn-group">
-                                  <button role="button" class="btn btn-primary btn-outline-first btn-round"  value="1" style="
-                                  padding-left: 10px;
-                                  padding-right: 10px;
-                                  margin-left: 2px;
-                                  margin-right:2px;
-                                  " 
-                                  >1 room</button>
-                                  <button role="button" class="btn  btn-primary btn-outline-second btn-round" value="2" style="
-                                  padding-left: 10px;
-                                  padding-right: 10px;
-                                  margin-left: 2px;
-                                  margin-right:2px;
-                                  " >2 rooms</button>
-                                  <button role="button" class="btn btn-primary btn-outline-third btn-round" value="3" style="
-                                  padding-left: 10px;
-                                  padding-right: 10px;
-                                  margin-left: 2px;
-                                  margin-right:2px;
-                                  " >3 rooms</button>
-                                  <button role="button" class="btn btn-primary btn-outline-fourth btn-round " value="4" style="
-                                  padding-left: 10px;
-                                  padding-right: 10px;
-                                  margin-left: 2px;
-                                  margin-right:2px;
-                                  " >4 rooms</button>
+                              margin-top: 20px;">ROOMS</p>
+                              <div class = "button-field">
+
+                                  <div class="form-check form-check-radio form-check-inline">
+                                    <label class="form-check-label">
+                                      <input class="form-check-input" type="radio" name="uiRooms" id="inlineRadio1" value="1">1
+                                      <span class="form-check-sign"></span>
+                                    </label>
                                   </div>
+                                  <div class="form-check form-check-radio form-check-inline">
+                                    <label class="form-check-label">
+                                      <input class="form-check-input" type="radio" name="uiRooms" id="inlineRadio2" value="2">2
+                                      <span class="form-check-sign"></span>
+                                    </label>
+                                  </div>
+                                  <div class="form-check form-check-radio form-check-inline">
+                                    <label class="form-check-label">
+                                      <input class="form-check-input" type="radio" name="uiRooms" id="inlineRadio3" value="3" >3
+                                      <span class="form-check-sign"></span>
+                                    </label>
+                                  </div>
+                                  <div class="form-check form-check-radio form-check-inline">
+                                    <label class="form-check-label">
+                                      <input class="form-check-input" type="radio" name="uiRooms" id="inlineRadio4" value="4" >4
+                                      <span class="form-check-sign"></span>
+                                    </label>
+                                  </div>
+                                </div>
                               
                 </div>
                 <div class="card-footer text-center">
@@ -129,12 +130,13 @@
 
     </div>
     <!--   Core JS Files   -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="assets/js/core/app.js" type="text/javascript"></script>
     <script src="assets/js/core/jquery.min.js" type="text/javascript"></script>
     <script src="assets/js/core/popper.min.js" type="text/javascript"></script>
     <script src="assets/js/core/bootstrap.min.js" type="text/javascript"></script>
     <!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
-    <script src="/assets/js/now-ui-kit.js?v=1.2.0" type="text/javascript"></script>
+    <script src="./assets/js/now-ui-kit.js?v=1.2.0" type="text/javascript"></script>
 
 </body>
 </html>

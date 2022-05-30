@@ -3147,12 +3147,12 @@ textarea.form-control:active {
 }
 
 .form-check-radio input[type="radio"]:checked+.form-check-sign::after {
-  width: 4px;
-  height: 4px;
-  background-color: #555555;
+  width: 8px;
+  height: 8px;
+  background-color: #f96332;
   border-color: #555555;
-  top: 11px;
-  left: 11px;
+  top: 9px;
+  left: 9px;
   opacity: 1;
 }
 
