@@ -54,7 +54,7 @@ def clear_floor(x):
 
 
 #Import th csv file into data frame
-df=pd.read_csv('imotibg_Sofia.csv')
+df=pd.read_csv('imotibg_Plovdiv.csv')
 
 #Check for null data
 df.isnull().sum()
@@ -70,6 +70,7 @@ df2['location']=df1['location'].apply(clear_location)
 #Check how many unique Quaters we have listed
 df2.groupby('location')['location'].agg('count').sort_values(ascending=False)
 df3=df2.copy()
+df3
 
 #Clear the Room details
 #df3['details']=df2['details'].apply(lambda x: str(x))
