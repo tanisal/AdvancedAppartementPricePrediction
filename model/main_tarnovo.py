@@ -54,7 +54,7 @@ def clear_floor(x):
 
 
 #Import th csv file into data frame
-df=pd.read_csv('imotibg_Plovdiv.csv')
+df=pd.read_csv('imotibg_Tarnovo.csv')
 
 #Check for null data
 df.isnull().sum()
@@ -66,11 +66,12 @@ df2=df1.copy()
 # Clear the quaters info
 df2['location']=df1['location'].apply(clear_location)
 
+df2
 
 #Check how many unique Quaters we have listed
 df2.groupby('location')['location'].agg('count').sort_values(ascending=False)
 df3=df2.copy()
-df3
+
 
 #Clear the Room details
 #df3['details']=df2['details'].apply(lambda x: str(x))
@@ -81,18 +82,18 @@ df3.groupby('floor')['floor'].agg('count').sort_values(ascending=False)
 df3['floor'].unique()
 
 #We clean the floor data
-df3.drop(df3[(df3['floor'] == 'Тухла, 2017 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'Тухла, 2022 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2023 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2024 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'Тухла, 2020 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2021 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'Тухла, 2009 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'Тухла, 2019 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'ЕПК, 1987 г.')].index,inplace=True)
-df3.drop(df3[(df3['floor'] == 'Тухла, 2023 г.')].index,inplace=True)
-df3.drop(df3[(df3['floor'] == 'Тухла, 2024 г.')].index,inplace=True)
-df3.drop(df3[(df3['floor'] == 'Тухла, 2021 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'НЕ')].index,inplace=True)
 #df3.drop(df3[(df3['build'] == 'Лок.отопл.')].index,inplace=True)
-df3.drop(df3[(df3['floor'] == 'Тухла')].index,inplace=True)
+#df3.drop(df3[(df3['floor'] == 'Тухла, 1965 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'Панел')].index,inplace=True)
 #df3.drop(df3[(df3['floor'] == 'Панел, 1985 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'ДА')].index,inplace=True)
@@ -105,9 +106,14 @@ df4['price']=df4['price'].apply(clear_eur)
 df4['m2']=df4['m2'].apply(clear_sqrm)
 df4['build']=df4['build'].apply(clear_build)
 df4['floor']=df3['floor'].apply(clear_floor)
-df4.drop(df4[(df4['build'] == 'Лок.отопл.')].index,inplace=True)
+df4.isnull().sum()
+
+
+
+#df4.drop(df4[(df4['build'] == 'Лок.отопл.')].index,inplace=True)
 df4.drop(df4[(df4['build'] == 'Гредоред')].index,inplace=True)
 
+df4.build.unique()
 
 #Create new column for the price per aquare meter in euro, which we will use to remove the outliers later
 df4['eur_price_square']=round(df4['price']/df4['m2'])
@@ -141,13 +147,13 @@ df5 = remove_pps_outliers(df4)
 df5.shape
 
 #Plot for the eur price per square meter. which shows the normal distribution
-
+'''
 matplotlib.rcParams['figure.figsize']=(20,10)
 plt.hist(df5.eur_price_square,rwidth=0.8)
 plt.xlabel('Price Per Square Meter')
 plt.ylabel('Count')
 
-
+'''
 
 #We remove the columns that we will not need
 df6=df5.drop(['price/m2','eur_price_square'],axis='columns')
@@ -247,11 +253,15 @@ def find_best_model_using_gridsearchsv(X,y):
     return pd.DataFrame(scores,columns=['model','best_score','best_params'])
 
 
-#find_best_model_using_gridsearchsv(X,y)
+# find_best_model_using_gridsearchsv(X,y)
 
 #Linear regression is the best in our case
 
 ##############find_best_model_using_gridsearchsv(X,y)
+
+
+
+
 
 def predict_price(location,m2,rooms,floor,build):
     loc_index=np.where(X.columns==location)[0][0]
@@ -267,16 +277,15 @@ def predict_price(location,m2,rooms,floor,build):
 
     return lr_clf.predict([x])[0]
 
+# #Export our mode
+# import pickle
+# with open('plovdiv_appartament_price_model.pickle','wb') as f:
+#     pickle.dump(lr_clf, f)
 
-#Export our mode
-import pickle
-with open('plovdiv_appartament_price_model.pickle','wb') as f:
-    pickle.dump(lr_clf, f)
-
-#in order for our model to work we need to have the columns data
-#that is why we need to export a json file
-columns={
-    'data_columns':[col.lower() for col in X.columns]
-}
-with open('columns_plovdiv.json','w',encoding='utf-8') as f:
-    f.write(json.dumps(columns))
+# #in order for our model to work we need to have the columns data
+# #that is why we need to export a json file
+# columns={
+#     'data_columns':[col.lower() for col in X.columns]
+# }
+# with open('columns_plovdiv.json','w',encoding='utf-8') as f:
+#     f.write(json.dumps(columns))
