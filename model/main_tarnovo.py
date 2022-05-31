@@ -198,6 +198,8 @@ df9.head(3)
 
 df10=df9.drop(['build'],axis='columns')
 df10.head(3)
+df10.floor.unique()
+
 
 #--------------------------------------Regression Model------------------------
 
