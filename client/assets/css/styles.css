@@ -688,7 +688,39 @@ body {
       flex: 0 0 33.333333%;
       max-width: 33.333333%;
 }
+
+.navbar-collapse {
+  -ms-flex-preferred-size: 100%;
+  flex-basis: 100%;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -ms-flex-align: center;
+  align-items: center;
 }
+.nav-link:after {
+  background-color: rgba(33, 37, 41, 0.533);
+}
+.nav-link:not(.btn):hover,
+.nav-link:not(.btn):active,
+.nav-link:not(.btn):focus {
+  background-color:rgba(33, 37, 41, 0.533);
+    border-radius: 0.1875rem;
+    border: solid 1px;
+    border-color: #f96332;
+}
+}
+@media (min-width: 992px){
+    .navbar-expand-lg .navbar-collapse {
+    display: -ms-flexbox!important;
+    display: flex!important;
+    -ms-flex-preferred-size: auto;
+    flex-basis: auto;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+}
+
 @font-face {
   font-family: 'Nucleo Outline';
   src: url("https://github.com/creativetimofficial/now-ui-kit/blob/master/assets/fonts/nucleo-outline.eot");
