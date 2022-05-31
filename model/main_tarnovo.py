@@ -90,8 +90,32 @@ df3.drop(df3[(df3['floor'] == 'Тухла, 2020 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'Тухла, 2021 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'Тухла, 2009 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'Тухла, 2019 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 1980 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2014 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2005 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2010 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2003 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] ==  'Тухла, 1985 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 1990 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'ЕПК, 1980 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'ЕПК, 1987 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Панел, 1987 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Панел, 1987 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'НЕ')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2018 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 1972 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2012 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Панел, 1980 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 1998 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2015 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 1993 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2004 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 1965 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 1975 г.')].index,inplace=True)
+df3.drop(df3[(df3['floor'] == 'Тухла, 2000 г.')].index,inplace=True)
+
+
+df3.drop(df3[(df3['floor'] == 'ЕПК')].index,inplace=True)
 #df3.drop(df3[(df3['build'] == 'Лок.отопл.')].index,inplace=True)
 #df3.drop(df3[(df3['floor'] == 'Тухла, 1965 г.')].index,inplace=True)
 df3.drop(df3[(df3['floor'] == 'Панел')].index,inplace=True)
@@ -108,11 +132,11 @@ df4['build']=df4['build'].apply(clear_build)
 df4['floor']=df3['floor'].apply(clear_floor)
 df4.isnull().sum()
 
+df4.build.unique()
 
-
-#df4.drop(df4[(df4['build'] == 'Лок.отопл.')].index,inplace=True)
+df4.drop(df4[(df4['build'] == 'Лок.отопл.')].index,inplace=True)
 df4.drop(df4[(df4['build'] == 'Гредоред')].index,inplace=True)
-
+df4.drop(df4[(df4['build'] == 'Прокарва се')].index,inplace=True)
 df4.build.unique()
 
 #Create new column for the price per aquare meter in euro, which we will use to remove the outliers later
@@ -253,7 +277,7 @@ def find_best_model_using_gridsearchsv(X,y):
     return pd.DataFrame(scores,columns=['model','best_score','best_params'])
 
 
-# find_best_model_using_gridsearchsv(X,y)
+#find_best_model_using_gridsearchsv(X,y)
 
 #Linear regression is the best in our case
 
@@ -277,15 +301,15 @@ def predict_price(location,m2,rooms,floor,build):
 
     return lr_clf.predict([x])[0]
 
-# #Export our mode
-# import pickle
-# with open('plovdiv_appartament_price_model.pickle','wb') as f:
-#     pickle.dump(lr_clf, f)
+#Export our mode
+import pickle
+with open('tarnovo_appartament_price_model.pickle','wb') as f:
+    pickle.dump(lr_clf, f)
 
-# #in order for our model to work we need to have the columns data
-# #that is why we need to export a json file
-# columns={
-#     'data_columns':[col.lower() for col in X.columns]
-# }
-# with open('columns_plovdiv.json','w',encoding='utf-8') as f:
-#     f.write(json.dumps(columns))
+#in order for our model to work we need to have the columns data
+#that is why we need to export a json file
+columns={
+    'data_columns':[col.lower() for col in X.columns]
+}
+with open('columns_tarnovo.json','w',encoding='utf-8') as f:
+    f.write(json.dumps(columns))
