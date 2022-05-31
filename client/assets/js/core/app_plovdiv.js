@@ -10,7 +10,7 @@ return -1; // Invalid Value
 }
 
 
-function onGetEstimatedPrice_shumen() {
+function onGetEstimatedPrice_plovdiv() {
 console.log("Get Estimated Price button clicked");
 var rooms = getRoomsValue();
 var total_square = document.getElementById("uiSquare");
@@ -19,8 +19,8 @@ var build = document.getElementById("uiBuild")
 var location = document.getElementById("uiLocations");
 var estPrice = document.getElementById("uiEstimatedPrice");
 
-var url = "http://127.0.0.1:5000/predict_appartament_price_shumen";
-//var url = "/api/predict_home_price_shumen";
+var url = "http://127.0.0.1:5000/predict_appartament_price_plovdiv";
+//var url = "/api/predict_home_price_plovdiv";
 
 $.post(url, {
     total_square: parseFloat(total_square.value),
@@ -36,12 +36,12 @@ $.post(url, {
  }
 
 
-function onPageLoad_shumen() {
+function onPageLoad_plovdiv() {
     console.log( "document loaded" );
-    var url = "http://127.0.0.1:5000/get_location_names_shumen"; // 
+    var url = "http://127.0.0.1:5000/get_location_names_plovdiv"; // 
     // var url = "/api/get_location_names_shumen";
     $.get(url,function(data, status) {
-        console.log("got response for get_location_names_shumen request");
+        console.log("got response for get_location_names_plovdiv request");
         if(data) {
             var locations = data.locations;
             var uiLocations = document.getElementById("uiLocations");
@@ -54,4 +54,4 @@ function onPageLoad_shumen() {
     });
   }
 
-window.onload = onPageLoad_shumen;
+window.onload = onPageLoad_plovdiv;

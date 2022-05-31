@@ -6,25 +6,45 @@ import util
 app= Flask(__name__)
 CORS(app)
 
-@app.route('/get_location_names')
-def get_location_names():
+@app.route('/get_location_names_shumen')
+def get_location_names_shumen():
     response = jsonify({
-        'locations':util.get_location_names()
+        'locations':util.get_location_names_shumen()
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-@app.route('/get_build_method')
-def get_build_method():
+@app.route('/get_location_names_plovdiv')
+def get_location_names_plovdiv():
     response = jsonify({
-        'build':util.get_build_method()
+        'locations':util.get_location_names_plovdiv()
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 
-@app.route('/predict_appartament_price', methods=['POST'])
-def predict_appartament_price():
+
+
+@app.route('/get_build_method_shumen')
+def get_build_method_shumen():
+    response = jsonify({
+        'build':util.get_build_method_shumen()
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+@app.route('/get_build_method_plovdiv')
+def get_build_method_plovdiv():
+    response = jsonify({
+        'build':util.get_build_method_plovdiv()
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+
+@app.route('/predict_appartament_price_shumen', methods=['POST'])
+def predict_appartament_price_shumen():
     total_square = float(request.form['total_square'])
     location = request.form['location']
     floor = int(request.form['floor'])
@@ -32,7 +52,23 @@ def predict_appartament_price():
     build = request.form['build']
     
     response = jsonify({
-        'estimated_price':util.get_predict_price(location,total_square,rooms,floor,build)
+        'estimated_price':util.get_predict_price_shumen(location,total_square,rooms,floor,build)
+
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+@app.route('/predict_appartament_price_plovdiv', methods=['POST'])
+def predict_appartament_price_plovdiv():
+    total_square = float(request.form['total_square'])
+    location = request.form['location']
+    floor = int(request.form['floor'])
+    rooms =int(request.form['rooms'])
+    build = request.form['build']
+    
+    response = jsonify({
+        'estimated_price':util.get_predict_price_plovdiv(location,total_square,rooms,floor,build)
 
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -40,8 +76,12 @@ def predict_appartament_price():
 
 
 
+
+
+
 if __name__ == '__main__':
     print('Starting Python Flask Server for Real Estate Price Prediction...')
-    util.load_saved_artifacts()
+    util.load_saved_artifacts_shumen()
+    util.load_saved_artifacts_plovdiv()
     app.run()
 
