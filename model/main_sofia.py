@@ -3,7 +3,9 @@ import pandas as pd
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt 
-
+import seaborn as sns
+from sklearn.compose import TransformedTargetRegressor
+import scipy as sp
 #----------------------------Data Cleaning----------------------------------#
 
 
@@ -100,17 +102,38 @@ df4['m2']=df4['m2'].apply(clear_sqrm)
 df4['build']=df4['build'].apply(clear_build)
 df4['floor']=df3['floor'].apply(clear_floor)
 df4.isnull().sum()
+df4.build.unique()
+
+df4
+
 df4.drop(df4[(df4['build'] == 'Лок.отопл.')].index,inplace=True)
 df4.drop(df4[(df4['build'] == 'Гредоред')].index,inplace=True)
+
+
+df5=df4.drop(['price/m2','build'],axis='columns')
+
 
 
 #Create new column for the price per aquare meter in euro, which we will use to remove the outliers later
 df4['eur_price_square']=round(df4['price']/df4['m2'])
 #Check for outliers
 df4.eur_price_square.describe()
-#location_stats = df3.groupby('location')['location'].agg('count').sort_values(ascending=False)
+min_threshold, max_threshold = df4.eur_price_square.quantile([0.05,0.95])
+print(min_threshold)
+print(max_threshold)
+df4[df4['eur_price_square']>max_threshold]
+df4[df4['eur_price_square']<min_threshold]
+min_threshold_m2,max_threshold_m2 = df4.m2.quantile([0.05,0.95])
 
-#df4.drop(df4[df4['location']>3000].index,inplace=True)
+df4.shape
+
+#Clean some outliers under 5% and above 95% percentile
+df5=df4[(df4.eur_price_square<max_threshold)&(df4.eur_price_square>min_threshold)&(df4['m2']<max_threshold_m2)&(df4['m2']>min_threshold_m2)]
+#location_stats = df3.groupby('location')['location'].agg('count').sort_values(ascending=False)
+df5.shape
+
+df5.describe()
+
 
 '''
 matplotlib.rcParams['figure.figsize']=(20,10)
@@ -120,13 +143,16 @@ plt.ylabel('Count')
 '''
 
 
+
+df4.shape
+
 #Function to remove price per m2 outliars for every location separately
 def remove_pps_outliers(df):
     df_out=pd.DataFrame()
     for key,subdf in df.groupby('location'):
         mean=np.mean(subdf.eur_price_square)
         std=np.std(subdf.eur_price_square)
-        reduced_df=subdf[(subdf.eur_price_square>(mean-std)) &(subdf.eur_price_square<=(mean+std))]
+        reduced_df=subdf[(subdf.eur_price_square>(mean-3*std)) &(subdf.eur_price_square<=(mean+3*std))]
         df_out=pd.concat([df_out,reduced_df],ignore_index=True)
     return df_out
 
@@ -135,17 +161,23 @@ def remove_pps_outliers(df):
 df5 = remove_pps_outliers(df4)
 df5.shape
 
-#Plot for the eur price per square meter. which shows the normal distribution
 
+sns.pairplot(df5)
+
+#Plot for the eur price per square meter. which shows the normal distribution
+'''
 matplotlib.rcParams['figure.figsize']=(20,10)
 plt.hist(df5.eur_price_square,rwidth=0.8)
 plt.xlabel('Price Per Square Meter')
 plt.ylabel('Count')
-
+'''
 
 
 #We remove the columns that we will not need
 df6=df5.drop(['price/m2','eur_price_square'],axis='columns')
+
+df6
+
 
 #To imlement mashine learning mdel we need to use numeric inputs, that is why we need to transform 
 # locatation column using psnds dummies
@@ -181,13 +213,45 @@ y.head()
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test= train_test_split(X,y,test_size=0.2,random_state=10)
 
+
+
+
 #We create linear regression model
 from sklearn.linear_model import LinearRegression
-lr_clf = LinearRegression()
+model= LinearRegression()
 #We train the model
-lr_clf.fit(X_train.values,y_train)
+model.fit(X_train,y_train)
+
 #Check the score of the model , the r-value
-lr_clf.score(X_test.values,y_test)
+model.score(X_test,y_test)
+
+#What is the mean value of the predicted value we are looking at
+test_predictions = model.predict(X_test)
+
+#----------------------------------Plots------------
+'''
+# We could visualy see it
+sns.histplot(data=df10,x='price',bins=20) 
+
+#We need to check for residuals 
+test_residuals = y_test - test_predictions
+sns.scatterplot(x=y_test,y=test_residuals)
+
+sns.displot(test_residuals,bins=25,kde=True)
+
+
+#we check how our data show looks like in comparison with normali distributed residuals
+
+# fig ,ax = plt.subplots(figsize=(6,8),dpi=100)
+# _ =sp.stats.probplot(test_residuals,plot=ax)
+
+sns.scatterplot(data=df10,x='y',y='residual')
+plt.axhline(y=0, color='r', linestyle='--')
+
+
+'''
+
+
 
 #We will cross validate
 from sklearn.model_selection import ShuffleSplit
@@ -246,7 +310,7 @@ find_best_model_using_gridsearchsv(X,y)
 
 #Linear regression is the best in our case
 
-##############find_best_model_using_gridsearchsv(X,y)
+#############find_best_model_using_gridsearchsv(X,y)
 
 
 
@@ -264,18 +328,18 @@ def predict_price(location,m2,rooms,floor,build):
     if build_index>= 0:
         x[build_index] =1
 
-    return lr_clf.predict([x])[0]
+    return model.predict([x])[0]
 
 
-# #Export our mode
-# import pickle
-# with open('shumen_appartament_price_model.pickle','wb') as f:
-#     pickle.dump(lr_clf, f)
+#Export our mode
+import pickle
+with open('sofia_appartament_price_model.pickle','wb') as f:
+    pickle.dump(model, f)
 
-# #in order for our model to work we need to have the columns data
-# #that is why we need to export a json file
-# columns={
-#     'data_columns':[col.lower() for col in X.columns]
-# }
-# # with open('columns.json','w',encoding='utf-8') as f:
-# #     f.write(json.dumps(columns))
+#in order for our model to work we need to have the columns data
+#that is why we need to export a json file
+columns={
+    'data_columns':[col.lower() for col in X.columns]
+}
+with open('columns_sofia.json','w',encoding='utf-8') as f:
+    f.write(json.dumps(columns))
