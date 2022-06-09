@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt 
-
+import statsmodels.api as sm
+import seaborn as sns
 #----------------------------Data Cleaning----------------------------------#
 
 
@@ -140,12 +141,12 @@ def remove_pps_outliers(df):
 df5 = remove_pps_outliers(df4)
 df5.shape
 
-#Plot for the eur price per square meter. which shows the normal distribution
+# #Plot for the eur price per square meter. which shows the normal distribution
 
-matplotlib.rcParams['figure.figsize']=(20,10)
-plt.hist(df5.eur_price_square,rwidth=0.8)
-plt.xlabel('Price Per Square Meter')
-plt.ylabel('Count')
+# matplotlib.rcParams['figure.figsize']=(20,10)
+# plt.hist(df5.eur_price_square,rwidth=0.8)
+# plt.xlabel('Price Per Square Meter')
+# plt.ylabel('Count')
 
 
 
@@ -193,6 +194,86 @@ lr_clf = LinearRegression()
 lr_clf.fit(X_train.values,y_train)
 #Check the score of the model , the r-value
 lr_clf.score(X_test.values,y_test)
+
+
+#--------------------------------------Regression Model------------------------
+
+
+#Depended variable is price , so we have X as independend and we nees to drop the price
+X=df10.drop(['price'],axis='columns')
+X.head(3)
+
+#
+y=df10.price
+y.head()
+
+# We divide the dataset into test, train, where we use the train dataset for the model
+# and to evaluate the model performance we use the test dataset
+#That is why we import train test split model
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test= train_test_split(X,y,test_size=0.2,random_state=10)
+
+# #We create linear regression model
+# from sklearn.linear_model import LinearRegression
+# lr_clf = LinearRegression()
+# #We train the model
+# lr_clf.fit(X_train.values,y_train)
+# #Check the score of the model , the r-value
+# lr_clf.score(X_test.values,y_test)
+
+
+
+
+#-------------------P-values-------
+
+X_incl_const = sm.add_constant(X_train)
+model_sm =sm.OLS(y_train,X_incl_const)
+results = model_sm.fit()
+results.rsquared
+
+# results.bic
+# results.pvalues
+
+pd.DataFrame({'coef':results.params,'p-values':round(results.pvalues,3)})
+
+
+
+##-------------------------Residuals-----------
+##First we check is there correlation btw predicted price and actual price
+# corr=round(y_train.corr(results.fittedvalues),2)
+# corr
+# plt.scatter(x=y_train,y=results.fittedvalues,c='navy',alpha=0.6)
+# plt.plot(y_train,y_train, color="cyan")
+# plt.xlabel('Actual prices $y _i$',fontsize=14)
+# plt.ylabel('Predicted Prices $y _i$',fontsize=14)
+# plt.title(f'Predicted Prices vs Actual Prices. Corr({corr})',fontsize=16)
+
+
+
+##Residuals vs. Predicted values
+# plt.scatter(x=results.fittedvalues,y=results.resid,c='navy',alpha=0.6)
+
+# plt.xlabel('Predicted Prices $y _i$',fontsize=14)
+# plt.ylabel('Residuals',fontsize=14)
+
+# #Distribution of the residuals - checking for normality
+# resid_mean = round(results.resid.mean(),3)
+# results.resid.skew()
+# print(resid_mean)
+
+
+sns.histplot(results.resid,color='navy',kde=True)
+plt.title('Price model: residuals')
+plt.show()
+
+#Mean Squared error
+
+mse= round(results.mse_resid,3)
+
+#------------------------------Cross Validation-------------
+
+
+
 
 #We will cross validate
 from sklearn.model_selection import ShuffleSplit
@@ -267,16 +348,28 @@ def predict_price(location,m2,rooms,floor,build):
 
     return lr_clf.predict([x])[0]
 
+estimated_price = round(predict_price('Център',80,3,2,"Панел"))
 
-#Export our mode
-import pickle
-with open('plovdiv_appartament_price_model.pickle','wb') as f:
-    pickle.dump(lr_clf, f)
 
-#in order for our model to work we need to have the columns data
-#that is why we need to export a json file
-columns={
-    'data_columns':[col.lower() for col in X.columns]
-}
-with open('columns_plovdiv.json','w',encoding='utf-8') as f:
-    f.write(json.dumps(columns))
+#Confidence interval
+rmse=np.sqrt(mse)
+lower = round(estimated_price - 2*rmse)
+upper = round(estimated_price + 2*rmse)
+print(f'Price estimation of {estimated_price} is in 95% of the casses in the range between {lower} and {upper}')
+
+
+
+
+
+# #Export our mode
+# import pickle
+# with open('plovdiv_appartament_price_model.pickle','wb') as f:
+#     pickle.dump(lr_clf, f)
+
+# #in order for our model to work we need to have the columns data
+# #that is why we need to export a json file
+# columns={
+#     'data_columns':[col.lower() for col in X.columns]
+# }
+# with open('columns_plovdiv.json','w',encoding='utf-8') as f:
+#     f.write(json.dumps(columns))

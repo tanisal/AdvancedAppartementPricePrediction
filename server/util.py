@@ -1,8 +1,8 @@
 import json
 import pickle
 import numpy as np
-
-
+from scipy.special import boxcox1p,inv_boxcox1p
+from joblib import load
 #-------------Utility Part-----------
 
 
@@ -31,8 +31,7 @@ def get_predict_price_shumen(location,m2,rooms,floor,build):
     if build_index>= 0:
         x[build_index] =1
 
-    return round(__model_shumen.predict([x])[0])
-
+    return round(inv_boxcox1p(__model_shumen.predict([x])[0],0.7),0)
 
 #Function which returns locations list
 def get_location_names_shumen():
@@ -55,9 +54,8 @@ def load_saved_artifacts_shumen():
         __locations_shumen = __data_columns_shumen[3:-3]
         __build_method_shumen = __data_columns_shumen[-3:]
 
-    
-    with open('./artifacts/shumen_appartament_price_model.pickle','rb') as f:
-        __model_shumen = pickle.load(f)
+       
+    __model_shumen = load('./artifacts/shumen_appartament_price_model.joblib')
     print('loading saved  Shumen artifacts...done')
         
 
@@ -226,7 +224,62 @@ def load_saved_artifacts_varna():
         __model_varna = pickle.load(f)
     print('loading saved  Varna artifacts...done')
 
-#-----------------------------------------
+#----------------------------------------- Sofia-------------
+
+
+
+__locations_sofia = None
+__data_columns_sofia = None
+__build_method_sofia = None
+__model_sofia = None
+
+def get_predict_price_sofia(location,m2,rooms,floor,build):
+    try:
+        loc_index=__data_columns_sofia.index(location.lower())
+    except:
+        loc_index =-1
+    try:
+        build_index=__data_columns_sofia.index(build.lower())
+    except:
+        build_index = -1
+    x=np.zeros(len(__data_columns_sofia))
+    x[0]=m2
+    x[1]=rooms
+    x[2]=floor
+    if loc_index >= 0:
+        x[loc_index] = 1
+    if build_index>= 0:
+        x[build_index] =1
+
+    return round(__model_sofia.predict([x])[0])
+
+
+#Function which returns locations list
+def get_location_names_sofia():
+    return __locations_sofia
+
+#Function which returns building method list
+def get_build_method_sofia():
+    return __build_method_sofia
+
+#Function which loads server artifacts files, from which we extract locations and build method and model
+def load_saved_artifacts_sofia():
+    print('loading saved Sofia artifacts...start')
+    global __data_columns_sofia
+    global __locations_sofia
+    global __build_method_sofia
+    global __model_sofia
+
+    with open('./artifacts/sofia_columns.json','r',encoding='utf-8') as f:
+        __data_columns_sofia = json.load(f)['data_columns']
+        __locations_sofia = __data_columns_sofia[3:-3]
+        __build_method_sofia = __data_columns_sofia[-3:]
+
+    
+    with open('./artifacts/sofia_appartament_price_model.pickle','rb') as f:
+        __model_sofia = pickle.load(f)
+    print('loading saved  Sofia artifacts...done')
+
 
 
 
@@ -257,3 +310,8 @@ if __name__ == '__main__':
     print(get_location_names_varna())
     print(get_build_method_varna())
     print(get_predict_price_varna('център',58,3,9,'тухла'))
+
+    load_saved_artifacts_sofia()
+    print(get_location_names_sofia())
+    print(get_build_method_sofia())
+    print(get_predict_price_sofia('оборище',58,3,9,'тухла'))

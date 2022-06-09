@@ -2,8 +2,9 @@ import json
 import pandas as pd
 import numpy as np
 import matplotlib
-import matplotlib.pyplot as plt 
-
+import matplotlib.pyplot as plt
+import seaborn as sns 
+import statsmodels.api as sm
 #----------------------------Data Cleaning----------------------------------#
 
 
@@ -135,6 +136,8 @@ def remove_pps_outliers(df):
 df5 = remove_pps_outliers(df4)
 df5.shape
 
+# sns.distplot(df5['price'])
+
 #Plot for the eur price oer square meter. which shows the normal distribution
 '''
 matplotlib.rcParams['figure.figsize']=(20,10)
@@ -189,6 +192,58 @@ lr_clf = LinearRegression()
 lr_clf.fit(X_train.values,y_train)
 #Check the score of the model , the r-value
 lr_clf.score(X_test.values,y_test)
+
+
+#-------------------P-values-------
+
+X_incl_const = sm.add_constant(X_train)
+model_sm =sm.OLS(y_train,X_incl_const)
+results = model_sm.fit()
+results.rsquared
+
+# results.bic
+# results.pvalues
+
+pd.DataFrame({'coef':results.params,'p-values':round(results.pvalues,3)})
+
+
+
+##-------------------------Residuals-----------
+##First we check is there correlation btw predicted price and actual price
+corr=round(y_train.corr(results.fittedvalues),2)
+corr
+plt.scatter(x=y_train,y=results.fittedvalues,c='navy',alpha=0.6)
+plt.plot(y_train,y_train, color="cyan")
+plt.xlabel('Actual prices $y _i$',fontsize=14)
+plt.ylabel('Predicted Prices $y _i$',fontsize=14)
+plt.title(f'Predicted Prices vs Actual Prices. Corr({corr})',fontsize=16)
+plt.show()
+
+
+##Residuals vs. Predicted values
+plt.scatter(x=results.fittedvalues,y=results.resid,c='navy',alpha=0.6)
+
+plt.xlabel('Predicted Prices $y _i$',fontsize=14)
+plt.ylabel('Residuals',fontsize=14)
+plt.show()
+
+# #Distribution of the residuals - checking for normality
+resid_mean = round(results.resid.mean(),3)
+results.resid.skew()
+# print(resid_mean)
+
+
+sns.histplot(results.resid,color='navy',kde=True)
+plt.title('Price model: residuals')
+plt.show()
+
+
+#------------------------------Cross Validation-------------
+
+
+
+
+
 
 #We will cross validate
 from sklearn.model_selection import ShuffleSplit
@@ -266,15 +321,15 @@ def predict_price(location,m2,rooms,floor,build):
 
 predict_price('Център',50,3,2,"Тухла")
 
-#Export our mode
-import pickle
-with open('varna_appartament_price_model.pickle','wb') as f:
-    pickle.dump(lr_clf, f)
+# #Export our mode
+# import pickle
+# with open('varna_appartament_price_model.pickle','wb') as f:
+#     pickle.dump(lr_clf, f)
 
-#in order for our model to work we need to have the columns data
-#that is why we need to export a json file
-columns={
-    'data_columns':[col.lower() for col in X.columns]
-}
-with open('varna_columns.json','w',encoding='utf-8') as f:
-    f.write(json.dumps(columns))
+# #in order for our model to work we need to have the columns data
+# #that is why we need to export a json file
+# columns={
+#     'data_columns':[col.lower() for col in X.columns]
+# }
+# with open('varna_columns.json','w',encoding='utf-8') as f:
+#     f.write(json.dumps(columns))
