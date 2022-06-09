@@ -1,46 +1,25 @@
-from IPython.display import display
+
 import json
 import pandas as pd
 import numpy as np
 import seaborn as sns
-
-
 import warnings
 def ignore_warn(*args, **kwargs):
     pass
 warnings.warn = ignore_warn #ignore annoying warning (from sklearn and seaborn)
-
-
 import matplotlib.pyplot as plt 
-
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-import statsmodels.stats.diagnostic as diag
-from statsmodels.compat import lzip
-import statsmodels.stats.stattools as sm_tools
-
-from sklearn.linear_model import ElasticNetCV, Lasso,  BayesianRidge, LassoLarsCV, RidgeCV,LassoCV
-from sklearn import preprocessing
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.ensemble import RandomForestRegressor,  GradientBoostingRegressor,ExtraTreesRegressor
-from sklearn.kernel_ridge import KernelRidge
+from sklearn.linear_model import ElasticNetCV, RidgeCV,LassoCV
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import RobustScaler
-from sklearn.base import BaseEstimator, TransformerMixin, RegressorMixin, clone
-from sklearn.model_selection import KFold, cross_val_score, train_test_split, GridSearchCV
-from sklearn.metrics import mean_squared_error,make_scorer
-
+from sklearn.model_selection import KFold, cross_val_score, train_test_split
+from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
-from sklearn.svm import SVR
 from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 from mlxtend.regressor import StackingCVRegressor
-
-
 from scipy import stats
 from scipy.special import boxcox1p,inv_boxcox1p
-
-from scipy.stats import yeojohnson
 from scipy.stats import skew
 
 
