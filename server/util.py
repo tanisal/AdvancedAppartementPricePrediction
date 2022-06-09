@@ -251,7 +251,7 @@ def get_predict_price_sofia(location,m2,rooms,floor,build):
     if build_index>= 0:
         x[build_index] =1
 
-    return round(__model_sofia.predict([x])[0])
+    return round(inv_boxcox1p(__model_sofia.predict([x])[0],-0.25),0)
 
 
 #Function which returns locations list
@@ -276,8 +276,8 @@ def load_saved_artifacts_sofia():
         __build_method_sofia = __data_columns_sofia[-3:]
 
     
-    with open('./artifacts/sofia_appartament_price_model.pickle','rb') as f:
-        __model_sofia = pickle.load(f)
+    
+    __model_sofia = load('./artifacts/sofia_appartament_price_model.joblib')
     print('loading saved  Sofia artifacts...done')
 
 
