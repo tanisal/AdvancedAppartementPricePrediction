@@ -84,7 +84,7 @@ def get_predict_price_plovdiv(location,m2,rooms,floor,build):
     if build_index>= 0:
         x[build_index] =1
 
-    return round(__model_plovdiv.predict([x])[0])
+    return round(inv_boxcox1p(__model_plovdiv.predict([x])[0],0.05),0)
 
 
 #Function which returns locations list
@@ -109,8 +109,8 @@ def load_saved_artifacts_plovdiv():
         __build_method_plovdiv = __data_columns_plovdiv[-3:]
 
     
-    with open('./artifacts/plovdiv_appartament_price_model.pickle','rb') as f:
-        __model_plovdiv = pickle.load(f)
+    
+    __model_plovdiv = load('./artifacts/plovdiv_appartament_price_model.joblib')
     print('loading saved  Plovdiv artifacts...done')
         
 #-----------------------------Veliko Tarnovo--------------
@@ -195,7 +195,7 @@ def get_predict_price_varna(location,m2,rooms,floor,build):
     if build_index>= 0:
         x[build_index] =1
 
-    return round(__model_varna.predict([x])[0])
+    return round(inv_boxcox1p(__model_varna.predict([x])[0],-0.25),0)
 
 
 #Function which returns locations list
@@ -220,8 +220,8 @@ def load_saved_artifacts_varna():
         __build_method_varna = __data_columns_varna[-3:]
 
     
-    with open('./artifacts/varna_appartament_price_model.pickle','rb') as f:
-        __model_varna = pickle.load(f)
+    
+    __model_varna = load('./artifacts/varna_appartament_price_model.joblib')
     print('loading saved  Varna artifacts...done')
 
 #----------------------------------------- Sofia-------------

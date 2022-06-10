@@ -346,6 +346,7 @@ lightgbm.fit(X_train, y_train)
 # print('-score: %s' % lightgbm_train_score)
 
 
+
 def predict_price(location,m2,rooms,floor,build):
     loc_index=np.where(X.columns==location)[0][0]
     build_index=np.where(X.columns==build)[0][0]
@@ -365,18 +366,18 @@ estimated_price= predict_price('Център',60,2,9,"Тухла")
 print(estimated_price)
 print('Stacked score: %s' % stack_gen.score(np.array(X_train),np.array(y_train)))
 
-#Export our mode
-from joblib import dump
-dump(stack_gen,'sofia_appartament_price_model.joblib')
+# #Export our mode
+# from joblib import dump
+# dump(stack_gen,'sofia_appartament_price_model.joblib')
      
 
-#in order for our model to work we need to have the columns data
-#that is why we need to export a json file
-columns={
-    'data_columns':[col.lower() for col in X.columns]
-}
-with open('sofia_columns.json','w',encoding='utf-8') as f:
-    f.write(json.dumps(columns))
+# #in order for our model to work we need to have the columns data
+# #that is why we need to export a json file
+# columns={
+#     'data_columns':[col.lower() for col in X.columns]
+# }
+# with open('sofia_columns.json','w',encoding='utf-8') as f:
+#     f.write(json.dumps(columns))
 
 
 
