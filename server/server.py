@@ -8,7 +8,7 @@ CORS(app)
 
 
 #-------------------Shumen-------------------------------
-@app.route('/get_location_names_shumen')
+@app.route('/get_location_names_shumen', methods=['GET'])
 def get_location_names_shumen():
     response = jsonify({
         'locations':util.get_location_names_shumen()
@@ -44,7 +44,7 @@ def predict_appartament_price_shumen():
 
 #--------------------------Plovdiv-----------------------------------------
 
-@app.route('/get_location_names_plovdiv')
+@app.route('/get_location_names_plovdiv',methods=['GET'])
 def get_location_names_plovdiv():
     response = jsonify({
         'locations':util.get_location_names_plovdiv()
@@ -52,7 +52,7 @@ def get_location_names_plovdiv():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-@app.route('/get_build_method_plovdiv')
+@app.route('/get_build_method_plovdiv', methods=['GET'])
 def get_build_method_plovdiv():
     response = jsonify({
         'build':util.get_build_method_plovdiv()

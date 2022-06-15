@@ -379,17 +379,17 @@ def predict_price(location,m2,rooms,floor,build):
 estimated_price= predict_price('Център',60,2,9,"Тухла")
 
 print(estimated_price)
-# print('RMSLE score: %s' % rmsle(y,inv_boxcox1p(stack_gen.predict(X),0.05)))
+print('RMSLE score: %s' % rmsle(y,inv_boxcox1p(stack_gen.predict(X),0.05)))
 
 
-# #Export our mode
-from joblib import dump
-dump(stack_gen,'plovdiv_appartament_price_model.joblib')
+# # #Export our mode
+# from joblib import dump
+# dump(stack_gen,'plovdiv_appartament_price_model.joblib')
 
-#in order for our model to work we need to have the columns data
-#that is why we need to export a json file
-columns={
-    'data_columns':[col.lower() for col in X.columns]
-}
-with open('plovdiv_columns.json','w',encoding='utf-8') as f:
-    f.write(json.dumps(columns))
+# #in order for our model to work we need to have the columns data
+# #that is why we need to export a json file
+# columns={
+#     'data_columns':[col.lower() for col in X.columns]
+# }
+# with open('plovdiv_columns.json','w',encoding='utf-8') as f:
+#     f.write(json.dumps(columns))

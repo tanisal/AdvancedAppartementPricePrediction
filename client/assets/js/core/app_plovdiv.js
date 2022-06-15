@@ -1,3 +1,6 @@
+
+
+//Function to get the values of the rooms
 function getRoomsValue() {
 var uiRooms = document.getElementsByName("uiRooms");
 console.log(uiRooms)
@@ -9,18 +12,23 @@ for(var i in uiRooms) {
 return -1; // Invalid Value
 }
 
-
+// Function to return the predicted price fot the input given
 function onGetEstimatedPrice_plovdiv() {
 console.log("Get Estimated Price button clicked");
 var rooms = getRoomsValue();
+console.log(rooms)
 var total_square = document.getElementById("uiSquare");
+console.log(total_square.value)
 var floor = document.getElementById("uiFloor");
-var build = document.getElementById("uiBuild")
-var location = document.getElementById("uiLocations");
-var estPrice = document.getElementById("uiEstimatedPrice");
+console.log(floor.value)
 
-var url = "http://127.0.0.1:5000/predict_appartament_price_plovdiv";
-// var url = "/api/predict_home_price_plovdiv";
+var build = document.getElementById("uiBuild")
+console.log(build.value)
+var location = document.getElementById("uiLocations");
+console.log(location.value)
+var estPrice = document.getElementById("uiEstimatedPrice");
+//var url = "http://127.0.0.1:5000/predict_appartament_price_plovdiv";
+var url = "/api/predict_appartament_price_plovdiv";
 
 $.post(url, {
     total_square: parseFloat(total_square.value),
@@ -35,11 +43,11 @@ $.post(url, {
 });
  }
 
-
+// Loading of the locations 
 function onPageLoad_plovdiv() {
     console.log( "document loaded" );
-    var url = "http://127.0.0.1:5000/get_location_names_plovdiv"; // 
-    // var url = "/api/get_location_names_plovdiv";
+    //var url = "http://127.0.0.1:5000/get_location_names_plovdiv"; // 
+    var url = "/api/get_location_names_plovdiv";
     $.get(url,function(data, status) {
         console.log("got response for get_location_names request");
         if(data) {

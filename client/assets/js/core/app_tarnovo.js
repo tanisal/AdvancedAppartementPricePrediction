@@ -19,8 +19,8 @@ var build = document.getElementById("uiBuild")
 var location = document.getElementById("uiLocations");
 var estPrice = document.getElementById("uiEstimatedPrice");
 
-var url = "http://127.0.0.1:5000/predict_appartament_price_tarnovo";
-// var url = "/api/predict_home_price_tarnovo";
+//var url = "http://127.0.0.1:5000/predict_appartament_price_tarnovo";
+var url = "/api/predict_appartament_price_tarnovo";
 
 $.post(url, {
     total_square: parseFloat(total_square.value),
@@ -38,8 +38,8 @@ $.post(url, {
 
 function onPageLoad_tarnovo() {
     console.log( "document loaded" );
-    var url = "http://127.0.0.1:5000/get_location_names_tarnovo"; // 
-    // var url = "/api/get_location_names_tarnovo";
+    //var url = "http://127.0.0.1:5000/get_location_names_tarnovo"; // 
+    var url = "/api/get_location_names_tarnovo";
     $.get(url,function(data, status) {
         console.log("got response for get_location_names request");
         if(data) {
