@@ -10,6 +10,6 @@ In this project as level 0 i used:
 - Gradient Boosting Regression
 - Extreme gradient boosting regression
 
-for the meta-model i used the Extreme Boosting Regression
+for the meta-model i used the Extreme Boosting Regression.
   The resulted blended model we save as joblib file and later used in util.py file for loading the data needed to predict the price of the appartements via reverse proxy server.
   The project structure is compriced of design part- html,css,js files and folders and Flask server part - util.py and server.py with all its atributes needed. The project is uploaded on a EC2 AWS Cloud. Nginx server is installed on the Ubuntu platform and configured to serve as a revrse proxy server.
