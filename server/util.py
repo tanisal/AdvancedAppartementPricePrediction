@@ -56,7 +56,7 @@ def get_predict_price_shumen(location, m2, rooms, floor, build):
     if build_index >= 0:
         x[build_index] = 1
 
-    # We use the regressions' model predict function
+    # We use the blended model for the price prediction
     return round(blend_model_shumen([x])[0], 0)
 
 
@@ -95,7 +95,7 @@ def load_saved_artifacts_shumen():
         # the same for the build method
         __build_method_shumen = __data_columns_shumen[-3:]
 
-    # We load the model from the joblib/pickle file
+    # We load the models from the joblib/pickle file
     __elasticnet_shumen = load(
         "./artifacts/shumen_appartament_price_model_elasticnet.joblib"
     )
@@ -158,7 +158,7 @@ def get_predict_price_plovdiv(location, m2, rooms, floor, build):
     if build_index >= 0:
         x[build_index] = 1
 
-    # We use the regressions' model predict function
+    # We use the inverted box cox transformtion to get the real price
     return round(inv_boxcox1p(blend_model_plovdiv([x])[0], 0.3), 0)
 
 
@@ -197,7 +197,7 @@ def load_saved_artifacts_plovdiv():
         # the same for the build method
         __build_method_plovdiv = __data_columns_plovdiv[-3:]
 
-    # We load the model from the joblib/pickle file
+    # We load the models from the joblib/pickle file
     __elasticnet_plovdiv = load(
         "./artifacts/plovdiv_appartament_price_model_elasticnet.joblib"
     )
@@ -262,7 +262,7 @@ def get_predict_price_tarnovo(location, m2, rooms, floor, build):
     if build_index >= 0:
         x[build_index] = 1
 
-    # We use the regressions' model predict function
+    # We use the inverted box-cox transformation to get the real price in euro
     return round(inv_boxcox1p(blend_model_tarnovo([x])[0], 0.35), 0)
 
 
@@ -301,7 +301,7 @@ def load_saved_artifacts_tarnovo():
         # the same for the build method
         __build_method_tarnovo = __data_columns_tarnovo[-3:]
 
-    # We load the model from the joblib/pickle file
+    # We load the models from the joblib/pickle file
     __elasticnet_tarnovo = load(
         "./artifacts/tarnovo_appartament_price_model_elasticnet.joblib"
     )
@@ -366,7 +366,7 @@ def get_predict_price_varna(location, m2, rooms, floor, build):
     if build_index >= 0:
         x[build_index] = 1
 
-    # We use the regressions' model predict function
+    # We use the inverted box-cox transformation to get the rela euro price
     return round(inv_boxcox1p(blend_model_varna([x])[0], -0.22), 0)
 
 
@@ -405,7 +405,7 @@ def load_saved_artifacts_varna():
         # the same for the build method
         __build_method_varna = __data_columns_varna[-3:]
 
-    # We load the model from the joblib/pickle file
+    # We load the models from the joblib/pickle file
     __elasticnet_varna = load(
         "./artifacts/varna_appartament_price_model_elasticnet.joblib"
     )
@@ -468,7 +468,7 @@ def get_predict_price_sofia(location, m2, rooms, floor, build):
     if build_index >= 0:
         x[build_index] = 1
 
-    # We use the regressions' model predict function
+    # We use the inverted box-c0x trtansformatin to get the real euro price prediction
     return round(inv_boxcox1p(blend_model_sofia([x])[0], 0.07), 0)
 
 
@@ -507,7 +507,7 @@ def load_saved_artifacts_sofia():
         # the same for the build method
         __build_method_sofia = __data_columns_sofia[-3:]
 
-    # We load the model from the joblib/pickle file
+    # We load the models from the joblib/pickle file
     __elasticnet_sofia = load(
         "./artifacts/sofia_appartament_price_model_elasticnet.joblib"
     )
